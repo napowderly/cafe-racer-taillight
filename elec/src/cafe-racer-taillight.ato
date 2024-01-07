@@ -1,0 +1,2 @@
+module CafeRacerTaillight:
+    signal gnd
