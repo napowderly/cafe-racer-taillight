@@ -181,7 +181,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "template123.kicad_pro",
+    "filename": "cafe-racer-taillight.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -215,7 +215,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "../../../build/default/cafe-racer-taillight.net",
+      "netlist": "../../../build/default/CafeRacerTaillight.net",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""

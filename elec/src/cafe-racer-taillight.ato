@@ -1,2 +1,83 @@
+import BuckReg5V from "regulators/regulators.ato"
+import LDOReg3V3 from "regulators/regulators.ato"
+import RP2040Kit from "rp2040/RP2040Kit.ato"
+import Power from "generics/interfaces.ato"
+import USBCConn from "usb-connectors/usb-connectors.ato"
+import WJ127_5_0_3P from "WJ127-5.0-3P.ato"
+import WJ127_5_0_5P from "WJ127-5.0-5P.ato"
+import LevelShifter from "level-shifter/level-shifter.ato"
+
 module CafeRacerTaillight:
-    signal gnd
+    power_in = new Power
+    buck_reg = new BuckReg5V
+
+    uc = new RP2040Kit
+    ldo_reg = new LDOReg3V3
+    ls_brake = new LevelShifter 
+    ls_left = new LevelShifter
+    ls_right = new LevelShifter
+    ls_led = new LevelShifter
+    usb = new USBCConn
+    input_connector = new WJ127_5_0_5P
+    output_connector = new WJ127_5_0_3P
+
+    # Voltage definitions
+    buck_reg.in = 12V
+    buck_reg.out = 5V
+    ldo_reg.in = 5V
+    ldo_reg.out = 3.3V
+
+    # Level Shifter connections
+    signal brake_input
+    signal left_input
+    signal right_input
+    signal led_data_out
+
+    # Connect to signals of high & low voltage
+    brake_input~ls_brake.hv_signal
+    ls_brake.lv_signal~uc.gpio0     # array of GPIOs would be nice
+
+    left_input~ls_left.hv_signal
+    ls_left.lv_signal~uc.gpio1
+
+    right_input~ls_right.hv_signal
+    ls_right.lv_signal~uc.gpio2
+
+    led_data_out~ls_led.hv_signal
+    ls_led.lv_signal~uc.gpio3
+
+    uc.usb_if~usb.usb2 # would be nice to have these both as "usb"
+
+
+    # 
+    input_connector.1~power_in.vcc
+    input_connector.2~power_in.gnd
+    input_connector.3~brake_input
+    input_connector.4~left_input
+    input_connector.5~right_input
+
+    output_connector.1~buck_reg.power_out.vcc
+    output_connector.2~buck_reg.power_out.gnd
+    output_connector.3~led_data_out
+
+
+
+    # Power connections
+    buck_reg.power_out~ldo_reg.power_in
+    ldo_reg.power_out~uc.power
+
+    ls_brake.power_hv~power_in 
+    ls_brake.power_lv~uc.power
+
+    ls_left.power_hv~power_in
+    ls_left.power_lv~uc.power
+
+    ls_right.power_hv~power_in
+    ls_right.power_lv~uc.power
+
+    ls_led.power_hv~buck_reg.power_out
+    ls_led.power_lv~uc.power
+    
+    usb.power~ldo_reg.power_in #just have to know this is 5V for now
+
+

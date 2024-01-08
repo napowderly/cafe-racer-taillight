@@ -1,0 +1,10 @@
+component WJ127_5_0_3P:
+    # component WJ127-5.0-3P
+    footprint = "CONN-TH_3P-P5.00_WJ127-5.0-3P"
+    lcsc_id = "C8393"
+    mpn = "C8393"
+    # pins
+    pin 1
+    pin 2
+    pin 3
+

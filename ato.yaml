@@ -3,4 +3,8 @@ builds:
   default:
     entry: elec/src/cafe-racer-taillight.ato:CafeRacerTaillight
 dependencies:
-- generics
+- regulators^1.0.0
+- rp2040^v2.0.0
+- generics^v2.0.1
+- level-shifter^1.0.0
+- usb-connectors^v2.0.0
